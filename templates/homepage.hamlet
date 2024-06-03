@@ -6,7 +6,7 @@
             <h2>
                 Fast, stable & spiced with great community
             <a href="http://www.yesodweb.com/book/" .btn.btn-info.btn-lg>
-                Read the Book
+                _{MsgHome}
 
 <div .container>
     <!-- Starting
