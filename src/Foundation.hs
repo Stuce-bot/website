@@ -42,7 +42,7 @@ data App = App
   , appLogger :: Logger
   }
 
--- add translation support, sadly I have to chose one, and i choose french, but I will try not to discriminate
+-- add translation support, sadly I have to chose a default one, and i choose french, but I will try not to discriminate
 mkMessage "App" "messages" "fr"
 
 data MenuItem = MenuItem

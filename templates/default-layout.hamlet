@@ -1,20 +1,38 @@
 
 <!-- Static navbar -->
-<nav .navbar>
+<div>
+  <nav .navbar>
     <ul .navbar-nav>
         <li .logo>
             <a href="#" .nav-link>
-                <span class="link-text logo-text">SSS SGH
+                <span .link-text .logo-text>SSS SGH
                 <span .material-symbols-outlined .link-icon>fast_forward
         $forall MenuItem label route _ icon <- navbarLeftFilteredMenuItems
             <li .nav-item :Just route == mcurrentRoute:.active>
                 <a href="@{route}" .nav-link> 
                     <span .material-symbols-outlined .link-icon>#{icon} 
                     <span .link-text>_{label}
+        <li .nav-item #themeButton>
+          <a href="#" class="nav-link">
+            <span 
+              .material-symbols-outlined
+              .theme-icon
+              .link-icon
+              #lightIcon
+              >light_mode
 
-<!-- Page Contents -->
+            <span 
+              .material-symbols-outlined
+              .theme-icon
+              .link-icon
+              #darkIcon
+              >dark_mode
+            <span .link-text> Themify
 
-<div .container>
+
+  <!-- Page Contents -->
+
+  <div .container>
     $if not $ Just HomeR == mcurrentRoute
         <ul .breadcrumb>
             $forall bc <- parents
@@ -30,8 +48,8 @@
     <div .main>
         ^{widget}
 
-<!-- Footer -->
-<footer .footer>
+  <!-- Footer -->
+  <footer .footer>
     <div .container>
         <p .text-muted>
             #{appCopyright $ appSettings master}
