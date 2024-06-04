@@ -1,3 +1,7 @@
+# Development progress
+- [x] Setup and learn internationalisation
+- [ ] Make file upload possible
+- [ ] Make different access types : visitor, member, writer, administrator
 ## Haskell Setup
 
 1. If you haven't already, [install Stack](https://haskell-lang.org/get-started)

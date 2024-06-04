@@ -1,24 +1,16 @@
 
 <!-- Static navbar -->
-<nav .navbar.navbar-default.navbar-static-top>
-    <div .container>
-        <div .navbar-header>
-            <button type="button" .navbar-toggle.collapsed data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-                <span class="sr-only">Toggle navigation
-                <span class="icon-bar">
-                <span class="icon-bar">
-                <span class="icon-bar">
-
-        <div #navbar .collapse.navbar-collapse>
-            <ul .nav.navbar-nav>
-                $forall MenuItem label route _ <- navbarLeftFilteredMenuItems
-                    <li :Just route == mcurrentRoute:.active>
-                        <a href="@{route}">_{label}
-
-            <ul .nav.navbar-nav.navbar-right>
-                $forall MenuItem label route _ <- navbarRightFilteredMenuItems
-                    <li :Just route == mcurrentRoute:.active>
-                        <a href="@{route}">_{label}
+<nav .navbar>
+    <ul .navbar-nav>
+        <li .logo>
+            <a href="#" .nav-link>
+                <span class="link-text logo-text">SSS SGH
+                <span .material-symbols-outlined .link-icon>fast_forward
+        $forall MenuItem label route _ icon <- navbarLeftFilteredMenuItems
+            <li .nav-item :Just route == mcurrentRoute:.active>
+                <a href="@{route}" .nav-link> 
+                    <span .material-symbols-outlined .link-icon>#{icon} 
+                    <span .link-text>_{label}
 
 <!-- Page Contents -->
 
@@ -35,13 +27,8 @@
       <div .alert.alert-info #message>#{msg}
 
 
-$if (Just HomeR == mcurrentRoute)
-    ^{widget}
-$else
-    <div .container>
-        <div .row>
-            <div .col-md-12>
-                ^{widget}
+    <div .main>
+        ^{widget}
 
 <!-- Footer -->
 <footer .footer>

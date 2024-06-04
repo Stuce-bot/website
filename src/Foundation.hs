@@ -49,11 +49,12 @@ data MenuItem = MenuItem
   { menuItemLabel :: AppMessage
   , menuItemRoute :: Route App
   , menuItemAccessCallback :: Bool
+  , menuItemIcon :: Text
   }
 
 data MenuTypes
   = NavbarLeft MenuItem
-  | NavbarRight MenuItem
+  | NavbarTop MenuItem
 
 -- This is where we define all of the routes in our application. For a full
 -- explanation of the syntax, please see:
@@ -126,32 +127,51 @@ instance Yesod App where
                 { menuItemLabel = MsgHome
                 , menuItemRoute = HomeR
                 , menuItemAccessCallback = True
+                , menuItemIcon = "home"
                 }
           , NavbarLeft $
               MenuItem
-                { menuItemLabel = MsgProfile
+                { menuItemLabel = MsgNews
                 , menuItemRoute = ProfileR
-                , menuItemAccessCallback = isJust muser
+                , menuItemAccessCallback = True
+                , menuItemIcon = "newspaper"
                 }
-          , NavbarRight $
+          , NavbarLeft $
+              MenuItem
+                { menuItemLabel = MsgCalendar
+                , menuItemRoute = ProfileR
+                , menuItemAccessCallback = True
+                , menuItemIcon = "calendar_month"
+                }
+          , NavbarLeft $
+              MenuItem
+                { menuItemLabel = MsgFiles
+                , menuItemRoute = ProfileR
+                , menuItemAccessCallback = True
+                , menuItemIcon = "description"
+                }
+          , NavbarTop $
               MenuItem
                 { menuItemLabel = MsgLogin
                 , menuItemRoute = AuthR LoginR
                 , menuItemAccessCallback = isNothing muser
+                , menuItemIcon = "login"
                 }
-          , NavbarRight $
+          , NavbarTop $
               MenuItem
                 { menuItemLabel = MsgLogout
                 , menuItemRoute = AuthR LogoutR
                 , menuItemAccessCallback = isJust muser
+                , menuItemIcon = "logout"
                 }
           ]
+    let languageItems = ["fr", "de"] :: [Text]
 
     let navbarLeftMenuItems = [x | NavbarLeft x <- menuItems]
-    let navbarRightMenuItems = [x | NavbarRight x <- menuItems]
+    let navbarTopMenuItems = [x | NavbarTop x <- menuItems]
 
     let navbarLeftFilteredMenuItems = [x | x <- navbarLeftMenuItems, menuItemAccessCallback x]
-    let navbarRightFilteredMenuItems = [x | x <- navbarRightMenuItems, menuItemAccessCallback x]
+    let navbarRightFilteredMenuItems = [x | x <- navbarTopMenuItems, menuItemAccessCallback x]
 
     -- We break up the default layout into two components:
     -- default-layout is the contents of the body tag, and
@@ -160,8 +180,6 @@ instance Yesod App where
     -- you to use normal widget features in default-layout.
 
     pc <- widgetToPageContent $ do
-      addStylesheet $ StaticR css_bootstrap_css
-      -- \^ generated from @Settings/StaticFiles.hs@
       $(widgetFile "default-layout")
     withUrlRenderer $(hamletFile "templates/default-layout-wrapper.hamlet")
 
@@ -182,6 +200,7 @@ instance Yesod App where
   isAuthorized FaviconR _ = return Authorized
   isAuthorized RobotsR _ = return Authorized
   isAuthorized (StaticR _) _ = return Authorized
+  isAuthorized SwitchLangR _ = return Authorized
   -- the profile route requires that the user is authenticated, so we
   -- delegate to that function
   isAuthorized ProfileR _ = isAuthenticated
@@ -280,7 +299,7 @@ instance YesodAuth App where
 
   -- You can add other plugins like Google Email, email or OAuth here
   authPlugins :: App -> [AuthPlugin App]
-  authPlugins app = [authOpenId Claimed []] ++ extraAuthPlugins
+  authPlugins app = authOpenId Claimed [] : extraAuthPlugins
    where
     -- Enable authDummy login if enabled.
     extraAuthPlugins = [authDummy | appAuthDummyLogin $ appSettings app]
