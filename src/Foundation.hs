@@ -56,6 +56,11 @@ data MenuTypes
   = NavbarLeft MenuItem
   | NavbarTop MenuItem
 
+data ThemeItem = ThemeItem
+  { themeItemId :: Text
+  , themeItemIcon :: Text
+  }
+
 -- This is where we define all of the routes in our application. For a full
 -- explanation of the syntax, please see:
 -- http://www.yesodweb.com/book/routing-and-handlers
@@ -166,6 +171,11 @@ instance Yesod App where
                 }
           ]
     let languageItems = ["fr", "de"] :: [Text]
+
+    let themeItems =
+          [ ThemeItem{themeItemId = "lightIconId", themeItemIcon = "light_mode"}
+          , ThemeItem{themeItemId = "darkIconId", themeItemIcon = "dark_mode"}
+          ]
 
     let navbarLeftMenuItems = [x | NavbarLeft x <- menuItems]
     let navbarTopMenuItems = [x | NavbarTop x <- menuItems]

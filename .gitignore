@@ -20,3 +20,13 @@ cabal.sandbox.config
 *~
 \#*
 ssssgh.cabal
+purs/bower_components/
+purs/node_modules/
+purs/.pulp-cache/
+purs/output/
+purs/generated-docs/
+purs/.psc-package/
+purs/.psc*
+purs/.purs*
+purs/.psa*
+purs/.spago

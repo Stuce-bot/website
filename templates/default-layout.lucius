@@ -34,25 +34,13 @@ body {
   margin: 0;
   padding: 0;
 }
-/*
-body::-webkit-scrollbar {
-  width: 0.25rem;
-}
-
-body::-webkit-scrollbar-track {
-  background: #1e1e24;
-}
-
-body::-webkit-scrollbar-thumb {
-  background: #6649b8;
-}
-*/
 
 .navbar {
   position: fixed;
   background-color: var(--nav-bg-primary);
   transition: width 600ms ease;
-  overflow: auto;
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 
 .navbar-nav {
@@ -68,10 +56,10 @@ body::-webkit-scrollbar-thumb {
 .nav-item {
   width: 100%;
 }
-
 .nav-item:last-child {
-  margin-top: auto;
+  margin-top:auto;
 }
+
 .nav-link {
   display: flex;
   align-items: center;
@@ -80,7 +68,11 @@ body::-webkit-scrollbar-thumb {
   text-decoration: none;
   filter: grayscale(100%);
   transition: var(--transition-speed);
+  .link-icon {
+    font-size: 2rem;
+    margin: 0 1.5rem;
   }
+}
 
 .nav-link:hover {
   filter: grayscale(0%);
@@ -93,12 +85,6 @@ body::-webkit-scrollbar-thumb {
   margin-left: 1rem;
   min-width: 9rem; /* Adjust this value to fit your needs */
   text-overflow: clip;
-  transition: var(--transition-speed);
-}
-
-.nav-link .link-icon {
-  font-size: 2rem;
-  margin: 0 1.5rem;
 }
 
 .logo {
@@ -111,13 +97,12 @@ body::-webkit-scrollbar-thumb {
   font-size: 1.5rem;
   letter-spacing: 0.3ch;
   width: 100%;
-}
 
+}
 .logo .link-icon {
-  transform: rotate(0deg);
-  transition: var(--transition-speed);
+    transform: rotate(0deg);
+    transition: var(--transition-speed);
 }
-
 .logo-text
 {
   display: inline;
@@ -171,21 +156,20 @@ body::-webkit-scrollbar-thumb {
   }
 
   .navbar:hover {
-    width: 14rem;
-  }
+    width: 15rem;
+    .link-text {
+      display: inline;
+    }
 
-  .navbar:hover .link-text {
-    display: inline;
-  }
+    .logo .link-icon
+    {
+      margin-left: 11rem;
+    }
 
-  .navbar:hover .logo .link-icon
-  {
-    margin-left: 11rem;
-  }
-
-  .navbar:hover .logo-text
-  {
-    left: 0px;
+    .logo-text
+    {
+      left: 0px;
+    }
   }
 }
 
@@ -241,11 +225,11 @@ body::-webkit-scrollbar-thumb {
 .theme-icon {
   display: none;
 }
-.dark #darkIcon {
+.dark #darkIconId {
   display: block;
 }
 
-.light #lightIcon {
+.light #lightIconId {
   display: block;
 }
 
