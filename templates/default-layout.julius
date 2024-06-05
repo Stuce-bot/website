@@ -2,20 +2,39 @@ const themeMap = {
   dark: "light",
   light: "dark",
 };
-
-const theme = localStorage.getItem('theme')
-  || (tmp = Object.keys(themeMap)[0],
-      localStorage.setItem('theme', tmp),
-      tmp);
 const bodyClass = document.body.classList;
-bodyClass.add(theme);
+
+document.getElementById('themeButton').onclick = toggleTheme;
 
 function toggleTheme() {
-  const current = localStorage.getItem('theme');
+  const current = localStorage.getItem('theme') || "light";
   const next = themeMap[current];
 
   bodyClass.replace(current, next);
   localStorage.setItem('theme', next);
 }
 
-document.getElementById('themeButton').onclick = toggleTheme;
+
+
+function setDark(themeName) {
+  bodyClass.replace("light", "dark");
+}
+
+
+function initializeTheme(){
+console.log("initializeTheme")
+const theme = localStorage.getItem('theme');
+  if (theme) {
+    if (theme === 'dark') {
+      setTheme('dark');
+    } 
+  }
+
+  const prefersDarkTheme = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)');
+  console.log(prefersDarkTheme.matches)
+  if (prefersDarkTheme.matches) {
+    setDark('dark')
+    return;
+  }
+}
+initializeTheme()
