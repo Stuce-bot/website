@@ -1,5 +1,9 @@
 # Development progress
 - [x] Setup and learn internationalisation
+- [x] Add light/dark theme button
+- [x] Set color palette (catppuccin) and set basic colors
+- [x] Install PureScript because I already feel like javascript is gonna be a mess
+- [ ] Learn PureScript by going trough the PureScript by example book
 - [ ] Make file upload possible
 - [ ] Make different access types : visitor, member, writer, administrator
 ## Haskell Setup
