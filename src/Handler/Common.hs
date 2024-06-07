@@ -26,9 +26,9 @@ getRobotsR =
     TypedContent typePlain $
       toContent $(embedFile "config/robots.txt")
 
--- Switch language to the provided one, if any
-postSwitchLangR :: Handler ()
+postSwitchLangR :: Handler Html
 postSwitchLangR = do
-  lang <- lookupPostParam "lang"
-  maybe (return ()) setLanguage lang
-  redirect HomeR
+  lang <- runInputPost $ ireq textField "lang"
+  setLanguage lang
+  setUltDestReferer
+  redirectUltDest HomeR

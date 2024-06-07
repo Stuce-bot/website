@@ -5,4 +5,4 @@ Logout : Logout
 Inscriptions : Anmeldewesen
 MemberZone : Mitgleider-Bereich
 Links : Links
-SwitchLang : FR
+OtherLanguage : fr

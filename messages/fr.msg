@@ -9,8 +9,7 @@ Logout : Deconnexion
 Inscriptions : inscriptions
 MemberZone : Zone Membres
 Links : Liens
-SwitchLang : DE
-
+OtherLanguage : de
 
 NotAnAdmin: You must be an administrator to access this page.
 
