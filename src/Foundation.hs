@@ -16,6 +16,7 @@ import Database.Persist.Sql (ConnectionPool, runSqlPool)
 import Import.NoFoundation
 import Text.Hamlet (hamletFile)
 import Text.Jasmine (minifym)
+import Yesod.Form.Nic (YesodNic)
 
 -- Used only when in "auth-dummy-login" setting is enabled.
 import Yesod.Auth.Dummy
@@ -60,6 +61,10 @@ data ThemeItem = ThemeItem
   { themeItemId :: Text
   , themeItemIcon :: Text
   }
+
+-- TODO: change this one for security reasons once prototype is done
+isAdmin :: User -> Bool
+isAdmin user = True
 
 -- This is where we define all of the routes in our application. For a full
 -- explanation of the syntax, please see:
@@ -137,7 +142,7 @@ instance Yesod App where
           , NavbarLeft $
               MenuItem
                 { menuItemLabel = MsgNews
-                , menuItemRoute = ProfileR
+                , menuItemRoute = NewsR
                 , menuItemAccessCallback = True
                 , menuItemIcon = "newspaper"
                 }
@@ -211,6 +216,8 @@ instance Yesod App where
   isAuthorized RobotsR _ = return Authorized
   isAuthorized (StaticR _) _ = return Authorized
   isAuthorized SwitchLangR _ = return Authorized
+  isAuthorized NewsR _ = return Authorized
+  isAuthorized (NewsEntryR _) _ = return Authorized
   -- the profile route requires that the user is authenticated, so we
   -- delegate to that function
   isAuthorized ProfileR _ = isAuthenticated
@@ -339,6 +346,8 @@ instance HasHttpManager App where
 
 unsafeHandler :: App -> Handler a -> IO a
 unsafeHandler = Unsafe.fakeHandlerGetLogger appLogger
+
+instance YesodNic App
 
 -- Note: Some functionality previously present in the scaffolding has been
 -- moved to documentation in the Wiki. Following are some hopefully helpful

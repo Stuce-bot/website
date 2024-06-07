@@ -20,7 +20,7 @@
             .link-icon
             ##{id}
             >#{icon}
-        <span .link-text>_{MsgTheme}
+        <span .link-text>_{MsgTheme} 
 
 
 <!-- Page Contents -->
