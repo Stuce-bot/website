@@ -1,2 +1,5 @@
 Icons: Material design
 Navbar: Fireship
+Color palette: Catppuccin
+Text editor: nicEdit
+Web framework: Yesod
