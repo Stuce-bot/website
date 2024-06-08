@@ -35,6 +35,7 @@ getHomeR = do
     aDomId <- newIdent
     setTitle "Welcome To Yesod!"
     $(widgetFile "homepage")
+    $(widgetFile "history")
 
 postHomeR :: Handler Html
 postHomeR = do
