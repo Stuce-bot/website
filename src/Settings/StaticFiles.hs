@@ -1,9 +1,10 @@
-{-# LANGUAGE NoImplicitPrelude #-}
 {-# LANGUAGE OverloadedStrings #-}
-{-# LANGUAGE TemplateHaskell   #-}
+{-# LANGUAGE TemplateHaskell #-}
+{-# LANGUAGE NoImplicitPrelude #-}
+
 module Settings.StaticFiles where
 
-import Settings     (appStaticDir, compileTimeAppSettings)
+import Settings (appStaticDir, compileTimeAppSettings)
 import Yesod.Static (staticFiles)
 
 -- This generates easy references to files in the static directory at compile time,
@@ -22,7 +23,7 @@ staticFiles (appStaticDir compileTimeAppSettings)
 
 -- If you prefer to updating the references by force
 --  -- especially when you are devloping like `stack exec -- yesod devel` --
--- you can update references by chaning file stamp.
+-- you can update references by changing file stamp.
 --
 -- On linux or Unix-like system, you can use
 --     shell> touch /Path/To/Settings/StaticFiles.hs

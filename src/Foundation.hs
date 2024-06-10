@@ -113,7 +113,7 @@ instance Yesod App where
   -- The defaultYesodMiddleware adds the response header "Vary: Accept, Accept-Language" and performs authorization checks.
   -- Some users may also want to add the defaultCsrfMiddleware, which:
   --   a) Sets a cookie with a CSRF token in it.
-  --   b) Validates that incoming write requests include that token in either a header oparameter.
+  --   b) Validates that incoming write requests include that token in either a header or POST parameter.
   -- To add it, chain it together with the defaultMiddleware: yesodMiddleware = defaultYesodMiddleware . defaultCsrfMiddleware
   -- For details, see the CSRF documentation in the Yesod.Core.Handler module of the yesod-core package.
   yesodMiddleware :: ToTypedContent res => Handler res -> Handler res
