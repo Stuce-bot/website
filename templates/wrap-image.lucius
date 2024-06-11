@@ -1,0 +1,23 @@
+.wrap-image-left {
+  img {
+    float: left;
+    margin-right: 1rem;
+    }  
+  }
+.wrap-image-right {
+    img {
+    float: right;
+    margin-left: 1rem;
+  }
+}
+.wrap-image-left,
+.wrap-image-right {
+  img {
+    border: 3px solid var(--text-primary);
+    border-radius: 1rem;
+    }
+  }
+img {
+    max-width: 20rem;
+    max-height: 20rem;
+}
