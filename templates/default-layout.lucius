@@ -28,6 +28,10 @@
     margin-left: 5rem;
     padding: 1rem;
 }
+.container{
+  display: flex;
+  flex-direction: column;
+  }
 body {
   color: var(--text-primary);
   background-color: var(--bg-primary);
@@ -125,14 +129,12 @@ body {
     bottom: 0;
     width: 100vw;
     height: 5rem;
+    flex-direction: row;
 
     .logo {
       display: none;
     }
 
-    .navbar-nav {
-      flex-direction: row;
-    }
 
     .nav-link {
       justify-content: center;

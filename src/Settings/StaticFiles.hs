@@ -21,7 +21,7 @@ import Yesod.Static (staticFiles)
 --     StaticFile ["js", "script.js"] []
 staticFiles (appStaticDir compileTimeAppSettings)
 
--- If you prefer to updating the references by force
+-- If you prefer to updating the references by force .
 --  -- especially when you are devloping like `stack exec -- yesod devel` --
 -- you can update references by changing file stamp.
 --
