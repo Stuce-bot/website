@@ -23,19 +23,8 @@ getNewsR = do
   muser <- maybeAuth
   entries <- runDB $ selectList [] [Desc EntryPosted]
   (entryWidget, enctype) <- generateFormPost entryForm
-  defaultLayout $ do
-    setTitleI MsgNewsArchiveTitle
+  renderWidget MsgNewsArchiveTitle $ do
     $(widgetFile "news")
-
-getNewsWidgetR :: Handler Html
-getNewsWidgetR = do
-  muser <- maybeAuth
-  entries <- runDB $ selectList [] [Desc EntryPosted]
-  (entryWidget, enctype) <- generateFormPost entryForm
-  pageContent <-
-    widgetToPageContent
-      $(widgetFile "news")
-  withUrlRenderer $ pageBody pageContent
 
 postNewsR :: Handler Html
 postNewsR = do

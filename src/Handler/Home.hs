@@ -25,8 +25,3 @@ getHomeR :: Handler Html
 getHomeR = renderWidget MsgHomepageTitle $ do
   $(widgetFile "wrap-image")
   $(widgetFile "history")
-postHomeR :: Handler Html
-postHomeR = do
-  defaultLayout $ do
-    setTitle "Welcome To Yesod!"
-    $(widgetFile "history")

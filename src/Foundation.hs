@@ -195,6 +195,7 @@ instance Yesod App where
 
     pc <- widgetToPageContent $ do
       $(widgetFile "default-layout")
+      $(widgetFile "wrap-image")
     withUrlRenderer $(hamletFile "templates/default-layout-wrapper.hamlet")
 
   -- The page to be redirected to when authentication is required.
@@ -286,7 +287,7 @@ instance YesodAuth App where
 
   -- Where to send a user after successful login
   loginDest :: App -> Route App
-  loginDest _ = HomeR
+  loginDest _ = do HomeR
 
   -- Where to send a user after logout
   logoutDest :: App -> Route App
@@ -352,6 +353,7 @@ isHtmxRequest = do
   maybeHeader <- lookupHeader "HX-Request"
   return $ isJust maybeHeader
 
+-- this is used to either use htmx or not, this way we just have to combine the html and javascript, then call this function
 renderWidget :: AppMessage -> Widget -> Handler Html
 renderWidget message widget = do
   htmx <- isHtmxRequest
