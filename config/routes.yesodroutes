@@ -8,14 +8,12 @@
 /robots.txt RobotsR GET
 
 -- top level destinations
-/ HomeR GET POST
-
-/comments CommentR POST
+/ HomeR GET
 
 /profile ProfileR GET
 
 /lang SwitchLangR POST
 
--- used to see the news feed and editing a specific new entry
 /news NewsR GET POST
+
 /news/#EntryId NewsEntryR GET

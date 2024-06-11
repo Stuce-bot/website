@@ -8,7 +8,7 @@
         <span .material-symbols-outlined .link-icon>fast_forward
     $forall MenuItem label route _ icon <- navbarLeftFilteredMenuItems
       <li .nav-item :Just route == mcurrentRoute:.active>
-        <a href="@{route}" .nav-link> 
+        <a href=@{route} hx-get=@{route} hx-replace-url=@{route} hx-target="#content" hx-swap="outerHTML" .nav-link>
           <span .material-symbols-outlined .link-icon>#{icon} 
           <span .link-text>_{label}
     <li .nav-item #themeButton>
@@ -41,7 +41,7 @@
     <div .alert.alert-info #message>#{msg}
 
 
-  <div>
+  <div #content>
       ^{widget}
 
 <!-- Footer -->

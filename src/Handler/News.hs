@@ -27,6 +27,16 @@ getNewsR = do
     setTitleI MsgNewsArchiveTitle
     $(widgetFile "news")
 
+getNewsWidgetR :: Handler Html
+getNewsWidgetR = do
+  muser <- maybeAuth
+  entries <- runDB $ selectList [] [Desc EntryPosted]
+  (entryWidget, enctype) <- generateFormPost entryForm
+  pageContent <-
+    widgetToPageContent
+      $(widgetFile "news")
+  withUrlRenderer $ pageBody pageContent
+
 postNewsR :: Handler Html
 postNewsR = do
   ((res, entryWidget), enctype) <- runFormPost entryForm

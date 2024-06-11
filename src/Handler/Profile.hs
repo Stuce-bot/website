@@ -14,3 +14,11 @@ getProfileR = do
   defaultLayout $ do
     setTitle . toHtml $ userIdent user <> "'s User page"
     $(widgetFile "profile")
+
+getProfileWidgetR :: Handler Html
+getProfileWidgetR = do
+  (_, user) <- requireAuthPair
+  pageContent <-
+    widgetToPageContent
+      $(widgetFile "profile")
+  withUrlRenderer $ pageBody pageContent

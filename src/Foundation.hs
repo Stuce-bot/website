@@ -209,7 +209,6 @@ instance Yesod App where
     Handler AuthResult
   -- Routes not requiring authentication.
   isAuthorized (AuthR _) _ = return Authorized
-  isAuthorized CommentR _ = return Authorized
   isAuthorized HomeR _ = return Authorized
   isAuthorized FaviconR _ = return Authorized
   isAuthorized RobotsR _ = return Authorized
@@ -347,6 +346,22 @@ unsafeHandler :: App -> Handler a -> IO a
 unsafeHandler = Unsafe.fakeHandlerGetLogger appLogger
 
 instance YesodNic App
+
+isHtmxRequest :: Handler Bool
+isHtmxRequest = do
+  maybeHeader <- lookupHeader "HX-Request"
+  return $ isJust maybeHeader
+
+renderWidget :: AppMessage -> Widget -> Handler Html
+renderWidget message widget = do
+  htmx <- isHtmxRequest
+  if htmx
+    then do
+      pageContent <- widgetToPageContent widget
+      withUrlRenderer $ pageBody pageContent
+    else defaultLayout $ do
+      setTitleI message
+      widget
 
 -- Note: Some functionality previously present in the scaffolding has been
 -- moved to documentation in the Wiki. Following are some hopefully helpful
