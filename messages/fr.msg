@@ -30,7 +30,9 @@ EntryTitle title@Text: Blog post: #{title}
 HomepageTitle: Yesod Blog Demo
 NewsArchiveTitle: Blog Archive
 
-
+RandomTab1: tab2
+RandomTab2: tab3
+HistoryTab: Historique
 HistoryTitle: Historique de la SSS
 
 HistoryP1: A l’automne 1930, la rencontre d’Emile Buri et de Georges Amoudruz «met en place le creuset qui devait mouler la spéléologie en Suisse» : quelques explorations souterraines plus tard, ils fondent à Genève le club des Boueux. C’est en 1939 que Jean-Jacques Pittard saura convaincre les deux premiers de l’utilité de créer une Société Suisse de Spéléologie, qui gagnera progressivement les autres cantons suisses, romands d’abord : Valais, Neuchâtel, Jura et Vaud pour les premiers. Dès 1946, une structure fédérative solide est mise en place, l’étape suivante étant la fondation de la revue Stalactite en 1951. De nouvelles structures sont mises en place, à mesure que le besoin s’en fait sentir : les commissions, chargées de tâches spécifiques et qui vont bien vite constituer les foyers principaux d’activité au plan national. Elles se chargeront, dans l’ordre de leur apparition, de la bibliothèque, de la documentation spéléologique, des publications, des aspects scientifiques, de l’enseignement et des techniques, des secours, de la protection des cavernes et du karst, du matériel, de la plongée souterraine, des relations publiques. Pendant ce temps, le nombre de clubs augmentait, marquant en particulier l’extension de la SSS dans la partie alémanique du pays : aujourd’hui, un peu plus de 80 ans après sa fondation, la SSS compte environ 35 sections et plus que 1000 membres.

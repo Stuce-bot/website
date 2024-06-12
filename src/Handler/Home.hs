@@ -8,20 +8,29 @@ module Handler.Home where
 
 import Import
 
--- Define our data that will be used for creating the form.
-data FileForm = FileForm
-  { fileInfo :: FileInfo
-  , fileDescription :: Text
-  }
-
--- This is a handler function for the GET request method on the HomeR
--- resource pattern. All of your resource patterns are defined in
--- config/routes.yesodroutes
---
--- The majority of the code you will write in Yesod lives in these handler
--- functions. You can spread them across multiple files if you are so
--- inclined, or create a single monolithic file.
 getHomeR :: Handler Html
 getHomeR = renderWidget MsgHomepageTitle $ do
   $(widgetFile "wrap-image")
-  $(widgetFile "history")
+  $(widgetFile "homepage")
+
+tabList :: [TabItem]
+tabList =
+  [ TabItem
+      { tabItemLabel = MsgHistoryTab
+      , tabItemId = "history-tab"
+      , tabItemContent = $(widgetFile "history")
+      , isChecked = False
+      }
+  , TabItem
+      { tabItemLabel = MsgRandomTab1
+      , tabItemId = "tab2"
+      , tabItemContent = $(widgetFile "placeholder")
+      , isChecked = True
+      }
+  , TabItem
+      { tabItemLabel = MsgRandomTab2
+      , tabItemId = "tab3"
+      , tabItemContent = $(widgetFile "placeholder")
+      , isChecked = False
+      }
+  ]

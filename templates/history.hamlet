@@ -1,15 +1,14 @@
-<div #content>
-  <h1> _{MsgHistoryTitle}
+<h1> _{MsgHistoryTitle}
 
-  <div .container>
-    <div .wrap-image-left>
-      <img src=@{StaticR img_history_image_1_jpeg}>
-      <p> _{MsgHistoryP1}
-    <div .wrap-image-right>
-      <img src=@{StaticR img_history_image_2_jpeg}>
-      <p> _{MsgHistoryP2}
-      <p> _{MsgHistoryP3}
-    <div .wrap-image-left>
-      <img src=@{StaticR img_history_image_3_jpeg}>
-      <p> _{MsgHistoryP4} 
-      <p> _{MsgHistoryP5}
+<div .container>
+  <div .wrap-image-left>
+    <img src=@{StaticR img_history_image_1_jpeg}>
+    <p> _{MsgHistoryP1}
+  <div .wrap-image-right>
+    <img src=@{StaticR img_history_image_2_jpeg}>
+    <p> _{MsgHistoryP2}
+    <p> _{MsgHistoryP3}
+  <div .wrap-image-left>
+    <img src=@{StaticR img_history_image_3_jpeg}>
+    <p> _{MsgHistoryP4} 
+    <p> _{MsgHistoryP5}

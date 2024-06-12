@@ -1,4 +1,4 @@
-Home : Home1
+Home : Haus
 Profile : Profile1
 Login : Anmelden
 Logout : Logout

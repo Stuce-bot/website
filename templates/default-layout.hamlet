@@ -9,7 +9,7 @@
     $forall MenuItem label route _ icon <- navbarLeftFilteredMenuItems
       <li .nav-item :Just route == mcurrentRoute:.active>
         <a href=@{route} hx-get=@{route} hx-replace-url=@{route} hx-target="#content" hx-swap="innerHTML" .nav-link>
-          <span .material-symbols-outlined .link-icon>#{icon} 
+          <span .material-symbols-outlined .link-icon>#{icon}
           <span .link-text>_{label}
     <li .nav-item #themeButton>
       <a href="#" .nav-link>
@@ -21,26 +21,7 @@
             ##{id}
             >#{icon}
         <span .link-text>_{MsgTheme}
-  <!-- Top Navbar -->
-  <ul .top-navbar>
-    <li>
-        <form action=@{SwitchLangR} method=post>
-          <button type="submit" class="link-button" name="lang" value=_{MsgOtherLanguage}>_{MsgOtherLanguage}
 <!-- Page Contents -->
-
-<div .main>
-  $if not $ Just HomeR == mcurrentRoute
-    <ul>
-      $forall bc <- parents
-        <li>
-          <a href="@{fst bc}">#{snd bc}
-
-      <li .active>#{title}
-
-  $maybe msg <- mmsg
-    <div #message>#{msg}
-
-
 <div #content .main>
       ^{widget}
 

@@ -196,6 +196,7 @@ instance Yesod App where
     pc <- widgetToPageContent $ do
       $(widgetFile "default-layout")
       $(widgetFile "wrap-image")
+      $(widgetFile "tabs")
     withUrlRenderer $(hamletFile "templates/default-layout-wrapper.hamlet")
 
   -- The page to be redirected to when authentication is required.
@@ -364,6 +365,13 @@ renderWidget message widget = do
     else defaultLayout $ do
       setTitleI message
       widget
+
+data TabItem = TabItem
+  { tabItemLabel :: AppMessage
+  , tabItemId :: Text
+  , tabItemContent :: Widget
+  , isChecked :: Bool
+  }
 
 -- Note: Some functionality previously present in the scaffolding has been
 -- moved to documentation in the Wiki. Following are some hopefully helpful
