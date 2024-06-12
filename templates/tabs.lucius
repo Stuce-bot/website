@@ -1,6 +1,7 @@
 .tabs {
   display: flex;
   flex-wrap: wrap;
+  max-width: 80rem;
   }
 .tabs-label {
   padding: 10px 16px;
@@ -19,6 +20,10 @@
    color: var(--yellow);
    border-bottom: 2px solid var(--yellow);
    }
+.tabs-label:hover {
+  background: var(--bg-secondary);
+  }
+
 .tabs-radio:checked+.tabs-label+.tabs-content {
   display: initial;
   }

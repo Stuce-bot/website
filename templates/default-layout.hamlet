@@ -21,6 +21,9 @@
             ##{id}
             >#{icon}
         <span .link-text>_{MsgTheme}
+  <!-- lang button -->
+  <form action=@{SwitchLangR} method=post #lang>
+    <button type="submit" class="link-button" name="lang" value=_{MsgOtherLanguage}>_{MsgOtherLanguage}
 <!-- Page Contents -->
 <div #content .main>
       ^{widget}
