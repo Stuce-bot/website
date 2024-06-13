@@ -1,6 +1,7 @@
 <div .tabs>
-  $forall TabItem label id content isChecked <- tabList
-    <input type="radio" name="home-tabs" id=#{id} .tabs-radio :isChecked:checked>
-    <label for=#{id} .tabs-label>_{label}
-    <div .tabs-content>
+  $forall TabItem label id _ isChecked <- tabList
+    <a href="#content-#{id}" .tabs-link>_{label}</a>
+<div .tabs-content>
+  $forall TabItem _ id content _ <- tabList
+    <div .tabs-item id=content-#{id}>
       ^{content}
