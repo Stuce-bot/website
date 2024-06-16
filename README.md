@@ -1,13 +1,17 @@
 # Development progress
 - [x] Setup and learn internationalisation
-- [x] Add light/dark theme button
+- [ ] Add light/dark theme button (currently needs a fix)
 - [x] Set color palette (catppuccin) and set basic colors
 - [x] Install PureScript because I already feel like javascript is gonna be a mess
 - [x] Import nicEdit to a page to allow editing text
 - [x] Make basic blog following the book example
 - [x] Add change language button
 - [x] make change language button go back to previous page
+- [ ] style change language button
+- [x] install and setup htmx, boost navbar with it
+- [ ] install htmx locally instead of cdn dependencies
 - [ ] Make the blog show pages of articles instead of all titles
+- [ ] Make next page button, and remove it with js, and add infinite scroll with htmx
 - [ ] Add style sheet for blog
 - [ ] Learn PureScript by going trough the PureScript by example book (chapter 2/13)
 - [ ] Make file upload possible
