@@ -1,5 +1,5 @@
 
-<nav>
+<nav hx-boost="true" hx-target="main">
   <!-- Left Navbar -->
   <ul .left-navbar>
     <li .logo>
@@ -8,7 +8,7 @@
         <span .material-symbols-outlined .link-icon>fast_forward
     $forall MenuItem label route _ icon <- navbarLeftFilteredMenuItems
       <li .nav-item :Just route == mcurrentRoute:.active>
-        <a href=@{route} hx-get=@{route} hx-replace-url=@{route} hx-target="#content" hx-swap="innerHTML" .nav-link>
+        <a href=@{route} .nav-link>
           <span .material-symbols-outlined .link-icon>#{icon}
           <span .link-text>_{label}
     <li .nav-item #themeButton>
@@ -25,11 +25,11 @@
   <form action=@{SwitchLangR} method=post #lang>
     <button type="submit" class="link-button" name="lang" value=_{MsgOtherLanguage}>_{MsgOtherLanguage}
 <!-- Page Contents -->
-<div #content .main>
-      ^{widget}
+<main>
+  ^{widget}
 
 <!-- Footer -->
-<footer .footer>
+<footer>
   <div .container>
     <p .text-muted>
       #{appCopyright $ appSettings master}

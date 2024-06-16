@@ -34,6 +34,9 @@ body {
   margin: 0;
   padding: 0;
 }
+.nav{
+  position: fixed;
+  }
 .left-navbar {
   position: fixed;
   background-color: var(--nav-bg-primary);
@@ -126,8 +129,8 @@ body {
   }
 /* Small screens */
 @media only screen and (max-width: 600px) {
-  .main,
-  .footer {
+  main,
+  footer {
       margin: 0 1rem;
   }
   .left-navbar {
@@ -145,8 +148,8 @@ body {
       justify-content: center;
     }
 
-    .main,
-    .footer {
+    main,
+    footer {
       margin: 0;
     }
     .nav-item:last-child {
@@ -157,8 +160,8 @@ body {
 
 /* Large screens */
 @media only screen and (min-width: 600px) {
-  .main,
-  .footer {
+  main,
+  footer {
     margin-left: 5rem;
     padding: 1rem;
   }
@@ -214,7 +217,7 @@ body {
 }
 
 
-.main {
+main {
     a:link {
       color: var(--blue);
     }

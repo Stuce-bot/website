@@ -17,19 +17,19 @@ tabList :: [TabItem]
 tabList =
   [ TabItem
       { tabItemLabel = MsgHistoryTab
-      , tabItemId = "history-tab"
+      , tabItemId = "1"
       , tabItemContent = $(widgetFile "history")
       , isChecked = False
       }
   , TabItem
       { tabItemLabel = MsgRandomTab1
-      , tabItemId = "tab2"
+      , tabItemId = "2"
       , tabItemContent = $(widgetFile "placeholder")
       , isChecked = True
       }
   , TabItem
       { tabItemLabel = MsgRandomTab2
-      , tabItemId = "tab3"
+      , tabItemId = "3"
       , tabItemContent = $(widgetFile "placeholder")
       , isChecked = False
       }
