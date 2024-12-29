@@ -9,7 +9,6 @@ module Handler.News where
 
 import Import
 
--- TODO: fix button behavior
 -- TODO: fix labels and use extra (learn what it does aswell ?)
 postForm :: Maybe Entry -> Html -> MForm Handler (FormResult Entry, Widget)
 postForm post extra = do

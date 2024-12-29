@@ -1,7 +1,7 @@
 :root {
   font-size: 16px;
   font-family: 'Open Sans';
-  
+  color-scheme: light dark;
   --moccha-Base: #1e1e2e;
   --moccha-Mantle: #181825;
   --moccha-Crust: #11111b;

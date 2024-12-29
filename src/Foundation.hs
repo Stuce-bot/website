@@ -15,9 +15,6 @@ import Control.Monad.Logger (LogSource)
 import Data.Kind (Type)
 import Database.Persist.Sql (ConnectionPool, runSqlPool)
 import Import.NoFoundation
-
--- TODO: remove yesod-nic
-
 import Text.Hamlet (hamletFile)
 import Text.Jasmine (minifym)
 
@@ -222,7 +219,7 @@ instance Yesod App where
   isAuthorized (NewsEntryR _) _ = return Authorized
   -- routes that need to be authenticated (every member can access it)
   isAuthorized ProfileR _ = isAuthenticated
-  -- routes for admins only TODO: fix this
+  -- routes for admins only
   isAuthorized (EditNewsEntryR _) _ = isAuthenticatedAsAdmin
   isAuthorized NewNewsEntryR _ = isAuthenticatedAsAdmin
 
