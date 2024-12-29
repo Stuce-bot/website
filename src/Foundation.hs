@@ -20,7 +20,6 @@ import Import.NoFoundation
 
 import Text.Hamlet (hamletFile)
 import Text.Jasmine (minifym)
-import Yesod.Form.Nic (YesodNic)
 
 -- Used only when in "auth-dummy-login" setting is enabled.
 -- TODO: remove when not needed anymore
@@ -458,8 +457,6 @@ instance HasHttpManager App where
 
 unsafeHandler :: App -> Handler a -> IO a
 unsafeHandler = Unsafe.fakeHandlerGetLogger appLogger
-
-instance YesodNic App
 
 isHtmxRequest :: Handler Bool
 isHtmxRequest = do
