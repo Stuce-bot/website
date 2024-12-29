@@ -17,10 +17,10 @@
 .tabs-radio:checked+.tabs-label {
    font-weight: bold;
    color: var(--yellow);
-   border-bottom: 2px solid var(--yellow);
+   border-bottom: 2px solid light-dark(#df8e1d, #f9e2af);
    }
 .tabs-label:hover {
-  background: var(--bg-secondary);
+  background: light-dark(#dce0e8, #11111b);
   }
 
 .tabs-radio:checked+.tabs-label+.tabs-content {
