@@ -1,0 +1,19 @@
+-- By default this file is used by `persistFileWith` in Model.hs (which is imported by Foundation.hs)
+-- Syntax for this file here: https://github.com/yesodweb/persistent/blob/master/docs/Persistent-entity-syntax.md
+
+-- | User on the database
+-- | we use a role based model, 
+User
+    email Text
+    password Text Maybe -- Password may not be set yet
+    verkey Text Maybe -- Used for resetting passwords
+    verified Bool
+    UniqueUser email
+    deriving Typeable
+-- | Entry of a article on the news page
+-- | contains both languages since the point is to modify them at the same place, and avoid desync-ing both versions
+Entry
+   contentFr Markdown
+   contentDe Markdown
+   time UTCTime
+   posted Bool

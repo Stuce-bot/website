@@ -1,0 +1,19 @@
+$if null entries
+    <p>_{MsgNoEntries}
+$else
+    $forall Entity entryId entry <- entries
+        <article>
+            <a href=@{NewsEntryR entryId}>view
+            $if isAdmin muser
+              <a href=@{EditNewsEntryR entryId}>edit
+            $if de
+                #{markdownToBlogPost $ entryContentDe entry}
+            $else
+                #{markdownToBlogPost $ entryContentFr entry}
+        <hr>
+
+$if isAdmin muser
+        <a href=@{NewNewsEntryR}>new
+$else
+    <p>
+        <a href=@{AuthR LoginR}>_{MsgLoginToPost}

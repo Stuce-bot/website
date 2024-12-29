@@ -1,0 +1,43 @@
+
+<nav hx-boost="true" hx-target="main">
+  <!-- Left Navbar -->
+  <ul .left-navbar>
+    <li .logo>
+      <a href="#" .nav-link>
+        <span .link-text .logo-text>SSS SGH
+        <span .material-symbols-outlined .link-icon>fast_forward
+    $forall MenuItem label route _ icon <- navbarLeftFilteredMenuItems
+      <li .nav-item :Just route == mcurrentRoute:.active>
+        <a href=@{route} .nav-link>
+          <span .material-symbols-outlined .link-icon>#{icon}
+          <span .link-text>_{label}
+    <li .nav-item #themeButton>
+      <a href="#" .nav-link>
+        $forall ThemeItem id icon <- themeItems
+          <span 
+            .material-symbols-outlined
+            .theme-icon
+            .link-icon
+            ##{id}
+            >#{icon}
+        <span .link-text>_{MsgTheme}
+
+<!-- lang button -->
+<form action=@{SwitchLangR} method=post #lang> <!-- TODO : add htmx request that replaces whole html page (but not css/js) -->
+  $maybe token <- mtoken
+    <input type="hidden" name="_token" value="#{token}">
+  <button type="submit" class="link-button" name="lang" value=_{MsgOtherLanguage}>_{MsgOtherLanguage}
+
+<!-- login button -->
+<form action=@{AuthR LoginR} method=get #lang> <!-- TODO: change body with htmx -->
+  <button type="submit" class="link-button" name="login">login
+
+<!-- Page Contents -->
+<main>
+  ^{widget}
+
+<!-- Footer -->
+<footer>
+  <div .container>
+    <p .text-muted>
+      #{appCopyright $ appSettings master}
