@@ -1,4 +1,5 @@
 # Development progress
+- [x] Two functional themes, a theme swap button, automatically uses system preference without js
 - [x] Make Internationalisation work
 	- [ ] style button
  	- [ ] finish translating and using messages everywhere  
