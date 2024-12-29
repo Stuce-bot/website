@@ -16,7 +16,7 @@
   }
 .tabs-radio:checked+.tabs-label {
    font-weight: bold;
-   color: var(--yellow);
+   color: light-dark(#df8e1d, #f9e2af);
    border-bottom: 2px solid light-dark(#df8e1d, #f9e2af);
    }
 .tabs-label:hover {
