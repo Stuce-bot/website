@@ -25,6 +25,13 @@
   --latte-Peach:#fe640b;
   --latte-Blue:#1e66f5;
 }
+.light {
+  color-scheme: light;
+}
+.dark {
+  color-scheme: dark;
+}
+
 
 body {
   color: light-dark(#5c5f77, #bac2de);
@@ -213,6 +220,10 @@ main {
 }
 
 .light #lightIconId {
+  display: block;
+}
+
+.auto #autoIconId {
   display: block;
 }
 

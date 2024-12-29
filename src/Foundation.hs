@@ -177,6 +177,7 @@ instance Yesod App where
     let themeItems =
           [ ThemeItem{themeItemId = "lightIconId", themeItemIcon = "light_mode"}
           , ThemeItem{themeItemId = "darkIconId", themeItemIcon = "dark_mode"}
+          , ThemeItem{themeItemId = "autoIconId", themeItemIcon = "contrast"}
           ]
 
     let navbarLeftMenuItems = [x | NavbarLeft x <- menuItems]

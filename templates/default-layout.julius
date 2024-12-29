@@ -1,40 +1,27 @@
 const themeMap = {
-  dark: "light",
+  dark: "auto",
   light: "dark",
+  auto: "light",
 };
+
 const bodyClass = document.body.classList;
 
 document.getElementById('themeButton').onclick = toggleTheme;
 
 function toggleTheme() {
-  const current = localStorage.getItem('theme') || "light";
+  const current = localStorage.getItem('theme') || "auto"; // default theme is auto (this way we dont override system preferences)
   const next = themeMap[current];
 
   bodyClass.replace(current, next);
   localStorage.setItem('theme', next);
 }
 
-
-
-function setDark(themeName) {
-  bodyClass.replace("light", "dark");
-}
-
-
 function initializeTheme(){
 console.log("initializeTheme")
 const theme = localStorage.getItem('theme');
   if (theme) {
-    if (theme === 'dark') {
-      setTheme('dark');
-    } 
+      bodyClass.replace('auto',theme)
   }
 
-  const prefersDarkTheme = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)');
-  console.log(prefersDarkTheme.matches)
-  if (prefersDarkTheme.matches) {
-    setDark('dark')
-    return;
-  }
 }
 initializeTheme()
