@@ -11,7 +11,7 @@
 - [ ] Make a login by email
 	- [ ] custom login page with forgot password instead of new user
  	- [ ] setup email client
-  	- [ ] structure databse to support roles
+  	- [ ] structure database to support roles
   	- [ ] add command to import basic roles (avoid situation where we delete all roles)
 - [ ] Make a way to display files from a folder
 - [ ] Make a calendar with similar technology as the blog
@@ -20,7 +20,7 @@
 
 ## Billingual for users and maintainers
 
-By having 2 markdown editors side by side in articles, we make the website billingual not only for users, but also for maintainers, making it way easier to not forget to change both languages, to translate or to fix issues.
+By having 2 markdown editors side by side in articles, we make the website bilingual not only for users, but also for maintainers, making it way easier to not forget to change both languages, to translate or to fix issues.
 
 ## Simple technology that can be used anywhere
 
@@ -28,7 +28,7 @@ By using markdown instead of a html editor, we give tools to users that can be u
 
 It can also be inserted into latex templates for fancy pdfs.
 
-By exposing a folder in the website, we will allow maintainers to simply drag and drop files in the filer (nextcloud) to upload to the website. Altough this requires discipline on the maintainers side, it does not require any technical skills nor efforts. Which is a great leap forward from phocadownload in jumla.
+By exposing a folder in the website, we will allow maintainers to simply drag and drop files in the filer (nextcloud) to upload to the website. Although this requires discipline on the maintainers side, it does not require any technical skills nor efforts. Which is a great leap forward from phocadownload in joomla.
 
 ## Accessible design
 
@@ -36,7 +36,7 @@ Usable on smartphones and on desktops, the website aims to be easy to read, navi
 
 ## Login and data managed by us
 
-Comply to swiss laws and try to act responsibly by keeping all the data under our control.
+Comply to Swiss laws and try to act responsibly by keeping all the data under our control.
 
 # Technology stack
 
@@ -54,7 +54,7 @@ The idea is to have a framework that lets me directly do thinks with the provide
 
 I do minimal usage of htmx, the idea is that htmx, when used lightly, gives benefits almost for no effort and added complexity. So I will abuse functionalities like hx-boost that allow navigating without javascript while offering more performance to javascript users without complexity.
 
-The rest is all css and html compiled from shakespear template which gives sytactic sugar and variable interpolation with type safety. So it should be very easy to change the layout/content for people without experience.
+The rest is all css and html compiled from shakespearean templates which gives sytactic sugar and variable interpolation with type safety. So it should be very easy to change the layout/content for people without experience / only html-css vanilla experience.
 
 # Actual features
 
