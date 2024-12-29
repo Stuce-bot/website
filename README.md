@@ -81,6 +81,12 @@ Does not support creating accounts as every account should be in a database, as 
 A file explorer that lets download the content of a folder for visitors, another for members.
 the content is filtered by language.
 
+## Mail
+
+Send automatic mail to change password
+
+Allow sending mail to users using the same member database 
+
 # Installation for developpement
 
 ## Haskell Setup
