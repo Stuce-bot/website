@@ -1,21 +1,88 @@
 # Development progress
-- [x] Setup and learn internationalisation
-- [ ] Add light/dark theme button (currently needs a fix)
-- [x] Set color palette (catppuccin) and set basic colors
-- [x] Install PureScript because I already feel like javascript is gonna be a mess
-- [x] Import nicEdit to a page to allow editing text
-- [x] Make basic blog following the book example
-- [x] Add change language button
-- [x] make change language button go back to previous page
-- [ ] style change language button
-- [x] install and setup htmx, boost navbar with it
-- [ ] install htmx locally instead of cdn dependencies
-- [ ] Make the blog show pages of articles instead of all titles
-- [ ] Make next page button, and remove it with js, and add infinite scroll with htmx
-- [ ] Add style sheet for blog
-- [ ] Learn PureScript by going trough the PureScript by example book (chapter 2/13)
-- [ ] Make file upload possible
-- [ ] Make different access types : visitor, member, writer, administrator
+- [x] Make Internationalisation work
+	- [ ] style button
+ 	- [ ] finish translating and using messages everywhere  
+- [x] Make a functional blog with markdown and two languages side by side
+	- [ ] database fetch 10 by 10
+ 	- [ ] infinite scroll with htmx
+  	- [ ] better new button
+  	- [ ] show which articles are published
+- [ ] Make a login by email
+	- [ ] custom login page with forgot password instead of new user
+ 	- [ ] setup email client
+  	- [ ] structure databse to support roles
+  	- [ ] add command to import basic roles (avoid situation where we delete all roles)
+- [ ] Make a way to display files from a folder
+- [ ] Make a calendar with similar technology as the blog
+
+# Vision
+
+## Billingual for users and maintainers
+
+By having 2 markdown editors side by side in articles, we make the website billingual not only for users, but also for maintainers, making it way easier to not forget to change both languages, to translate or to fix issues.
+
+## Simple technology that can be used anywhere
+
+By using markdown instead of a html editor, we give tools to users that can be used locally, that can be easily converted to pdf, to a webpage, to a mail, or whatever. People can work from anywhere, share the formated file without issues, past it into deepl without issues, no formatting will be lost ever.
+
+It can also be inserted into latex templates for fancy pdfs.
+
+By exposing a folder in the website, we will allow maintainers to simply drag and drop files in the filer (nextcloud) to upload to the website. Altough this requires discipline on the maintainers side, it does not require any technical skills nor efforts. Which is a great leap forward from phocadownload in jumla.
+
+## Accessible design
+
+Usable on smartphones and on desktops, the website aims to be easy to read, navigate and use from anywhere.
+
+## Login and data managed by us
+
+Comply to swiss laws and try to act responsibly by keeping all the data under our control.
+
+# Technology stack
+
+## Database
+
+At the moment I use SQLite, but I might change to postgresSql to allow easier separation of tables, for security concerns, once we start storing passwords.
+## Backend
+
+I use haskell, as strong types make the code safer, and the yesod framework, since it was the most popular and documented framework I found at the time in said language.
+It offers type safety and separate the logic of each pages with separate handlers, making it a good server side framework for low maintenance.
+
+The idea is to have a framework that lets me directly do thinks with the provided language so I can have tools for our tasks completely compatible with each other. No more copying rich text from program A to html editor in program B, manually fixing syntax, and repeating for the second language.
+
+## Frontend
+
+I do minimal usage of htmx, the idea is that htmx, when used lightly, gives benefits almost for no effort and added complexity. So I will abuse functionalities like hx-boost that allow navigating without javascript while offering more performance to javascript users without complexity.
+
+The rest is all css and html compiled from shakespear template which gives sytactic sugar and variable interpolation with type safety. So it should be very easy to change the layout/content for people without experience.
+
+# Actual features
+
+## Internationalisation
+
+German and French everywhere (technology could allow italian on static pages but much work on blog obviously)
+
+## Blog
+
+Works with yesod forms, markdown and the database, sorted by date.
+
+# Future features
+
+## Calendar
+
+Works with yesod forms, markdown and the database, sorted by date.
+
+## Login
+
+Works with yesod auth, saves **hashed and salted passwords** to the database.
+Does not support creating accounts as every account should be in a database, as we only allow members.
+
+## Files
+
+A file explorer that lets download the content of a folder for visitors, another for members.
+the content is filtered by language.
+
+# Installation for developpement
+
 ## Haskell Setup
 
 1. If you haven't already, [install Stack](https://haskell-lang.org/get-started)
