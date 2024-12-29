@@ -26,36 +26,6 @@
   --latte-Blue:#1e66f5;
 }
 
-/*
- * Themes
- */
-.light {
-  --nav-text-primary: var(--latte-Text);
-  --nav-text-secondary: var(--latte-Yellow);
-  --nav-bg-primary: var(--latte-Mantle);
-  --nav-bg-secondary: var(--latte-Crust);
-  --text-primary: var(--latte-Text);
-  --text-secondary: var(--latte-Subtext1);
-  --bg-primary: var(--latte-Base);
-  --bg-secondary: var(--latte-Mantle);
-  --yellow: var(--latte-Yellow);
-  --blue: var(--latte-Blue);
-  --peach: var(--latte-Peach);
-}
-
-.dark {
-  --nav-text-primary: var(--moccha-Text);
-  --nav-text-secondary: var(--moccha-Yellow);
-  --nav-bg-primary: var(--moccha-Mantle);
-  --nav-bg-secondary: var(--moccha-Crust);
-  --text-primary: var(--moccha-Text);
-  --text-secondary: var(--moccha-Subtext1);
-  --bg-primary: var(--moccha-Base);
-  --bg-secondary: var(--moccha-Mantle);
-  --yellow: var(--moccha-Yellow);
-  --blue: var(--moccha-Blue);
-  --peach: var(--moccha-Peach);
-}
 body {
   color: light-dark(#5c5f77, #bac2de);
   background-color: light-dark(#eff1f5, #1e1e2e);
