@@ -1,6 +1,7 @@
 :root {
   font-size: 16px;
   font-family: 'Open Sans';
+  
   --moccha-Base: #1e1e2e;
   --moccha-Mantle: #181825;
   --moccha-Crust: #11111b;
@@ -24,19 +25,15 @@
   --latte-Blue:#1e66f5;
 }
 
-.container{
-  display: flex;
-  flex-direction: column;
-  }
 body {
   color: var(--text-primary);
   background-color: var(--bg-primary);
   margin: 0;
   padding: 0;
 }
-.nav{
-  position: fixed;
-  }
+#lang {
+  float: right;
+}
 .left-navbar {
   position: fixed;
   background-color: var(--nav-bg-primary);
@@ -51,7 +48,7 @@ body {
   flex-direction: column;
   align-items: center;
   height: 100%;
-
+ 
   .nav-item {
     width: 100%;
   }
@@ -234,6 +231,9 @@ main {
       color: var(--blue);
     } 
   }
+/*
+ * only show good theme icon
+*/
 .theme-icon {
   display: none;
 }
@@ -245,6 +245,3 @@ main {
   display: block;
 }
 
-.solar #solarIcon {
-  display: block;
-}

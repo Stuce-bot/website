@@ -14,6 +14,11 @@
 
 /lang SwitchLangR POST
 
-/news NewsR GET POST
+/news NewsR GET
 
-/news/#EntryId NewsEntryR GET
+/news/new NewNewsEntryR GET POST
+
+/news/edit/#EntryId EditNewsEntryR GET POST
+
+/news/view/#EntryId NewsEntryR GET
+

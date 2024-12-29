@@ -43,6 +43,9 @@ dependencies:
 - wai
 - foreign-store
 
+- yesod-markdown
+- mime-mail
+
 # The library contains all of our application code. The executable
 # defined below is just a thin wrapper.
 library:

@@ -2,6 +2,7 @@
 {-# LANGUAGE InstanceSigs #-}
 {-# LANGUAGE MultiParamTypeClasses #-}
 {-# LANGUAGE OverloadedStrings #-}
+{-# LANGUAGE QuasiQuotes #-}
 {-# LANGUAGE RankNTypes #-}
 {-# LANGUAGE TemplateHaskell #-}
 {-# LANGUAGE TypeFamilies #-}
@@ -14,19 +15,25 @@ import Control.Monad.Logger (LogSource)
 import Data.Kind (Type)
 import Database.Persist.Sql (ConnectionPool, runSqlPool)
 import Import.NoFoundation
+
+-- TODO: remove yesod-nic
+
 import Text.Hamlet (hamletFile)
 import Text.Jasmine (minifym)
 import Yesod.Form.Nic (YesodNic)
 
 -- Used only when in "auth-dummy-login" setting is enabled.
-import Yesod.Auth.Dummy
+-- TODO: remove when not needed anymore
+-- import Yesod.Auth.Dummy
 
-import qualified Data.CaseInsensitive as CI
-import qualified Data.Text.Encoding as TE
-import Yesod.Auth.OpenId (IdentifierType (Claimed), authOpenId)
+import Network.Mail.Mime hiding (htmlPart)
+import Text.Shakespeare.Text (stext)
+import Yesod.Auth.Email
 import Yesod.Core.Types (Logger)
 import qualified Yesod.Core.Unsafe as Unsafe
 import Yesod.Default.Util (addStaticContentExternal)
+
+-- TODO: change login button to logout when login'd
 
 {- | The foundation datatype for your application. This can be a good place to
  keep settings and values requiring initialization before your application
@@ -61,10 +68,6 @@ data ThemeItem = ThemeItem
   { themeItemId :: Text
   , themeItemIcon :: Text
   }
-
--- TODO: change this one for security reasons once prototype is done
-isAdmin :: User -> Bool
-isAdmin user = True
 
 -- This is where we define all of the routes in our application. For a full
 -- explanation of the syntax, please see:
@@ -116,14 +119,13 @@ instance Yesod App where
   --   b) Validates that incoming write requests include that token in either a header or POST parameter.
   -- To add it, chain it together with the defaultMiddleware: yesodMiddleware = defaultYesodMiddleware . defaultCsrfMiddleware
   -- For details, see the CSRF documentation in the Yesod.Core.Handler module of the yesod-core package.
-  yesodMiddleware :: ToTypedContent res => Handler res -> Handler res
-  yesodMiddleware = defaultYesodMiddleware
+  yesodMiddleware :: (ToTypedContent res) => Handler res -> Handler res
+  yesodMiddleware = defaultCsrfMiddleware . defaultYesodMiddleware
 
   defaultLayout :: Widget -> Handler Html
   defaultLayout widget = do
     master <- getYesod
     mmsg <- getMessage
-
     muser <- maybeAuthPair
     mcurrentRoute <- getCurrentRoute
 
@@ -132,43 +134,43 @@ instance Yesod App where
 
     -- Define the menu items of the header.
     let menuItems =
-          [ NavbarLeft $
-              MenuItem
+          [ NavbarLeft
+              $ MenuItem
                 { menuItemLabel = MsgHome
                 , menuItemRoute = HomeR
                 , menuItemAccessCallback = True
                 , menuItemIcon = "home"
                 }
-          , NavbarLeft $
-              MenuItem
+          , NavbarLeft
+              $ MenuItem
                 { menuItemLabel = MsgNews
                 , menuItemRoute = NewsR
                 , menuItemAccessCallback = True
                 , menuItemIcon = "newspaper"
                 }
-          , NavbarLeft $
-              MenuItem
+          , NavbarLeft
+              $ MenuItem
                 { menuItemLabel = MsgCalendar
                 , menuItemRoute = ProfileR
                 , menuItemAccessCallback = True
                 , menuItemIcon = "calendar_month"
                 }
-          , NavbarLeft $
-              MenuItem
+          , NavbarLeft
+              $ MenuItem
                 { menuItemLabel = MsgFiles
                 , menuItemRoute = ProfileR
                 , menuItemAccessCallback = True
                 , menuItemIcon = "description"
                 }
-          , NavbarTop $
-              MenuItem
+          , NavbarTop
+              $ MenuItem
                 { menuItemLabel = MsgLogin
                 , menuItemRoute = AuthR LoginR
                 , menuItemAccessCallback = isNothing muser
                 , menuItemIcon = "login"
                 }
-          , NavbarTop $
-              MenuItem
+          , NavbarTop
+              $ MenuItem
                 { menuItemLabel = MsgLogout
                 , menuItemRoute = AuthR LogoutR
                 , menuItemAccessCallback = isJust muser
@@ -194,6 +196,7 @@ instance Yesod App where
     -- you to use normal widget features in default-layout.
 
     pc <- widgetToPageContent $ do
+      mtoken <- fmap reqToken getRequest
       $(widgetFile "default-layout")
       $(widgetFile "wrap-image")
       $(widgetFile "tabs")
@@ -218,9 +221,11 @@ instance Yesod App where
   isAuthorized SwitchLangR _ = return Authorized
   isAuthorized NewsR _ = return Authorized
   isAuthorized (NewsEntryR _) _ = return Authorized
-  -- the profile route requires that the user is authenticated, so we
-  -- delegate to that function
+  -- routes that need to be authenticated (every member can access it)
   isAuthorized ProfileR _ = isAuthenticated
+  -- routes for admins only TODO: fix this
+  isAuthorized (EditNewsEntryR _) _ = isAuthenticatedAsAdmin
+  isAuthorized NewNewsEntryR _ = isAuthenticatedAsAdmin
 
   -- This function creates static content files in the static folder
   -- and names them based on a hash of their content. This allows
@@ -250,10 +255,12 @@ instance Yesod App where
   -- in development, and warnings and errors in production.
   shouldLogIO :: App -> LogSource -> LogLevel -> IO Bool
   shouldLogIO app _source level =
-    return $
-      appShouldLogAll (appSettings app)
-        || level == LevelWarn
-        || level == LevelError
+    return
+      $ appShouldLogAll (appSettings app)
+      || level
+      == LevelWarn
+      || level
+      == LevelError
 
   makeLogger :: App -> IO Logger
   makeLogger = return . appLogger
@@ -288,7 +295,7 @@ instance YesodAuth App where
 
   -- Where to send a user after successful login
   loginDest :: App -> Route App
-  loginDest _ = do HomeR
+  loginDest _ = HomeR
 
   -- Where to send a user after logout
   logoutDest :: App -> Route App
@@ -303,6 +310,7 @@ instance YesodAuth App where
     Creds App ->
     m (AuthenticationResult App)
   authenticate creds = liftHandler $ runDB $ do
+    -- TODO: we might in our case not want to allow creating new user, check this in more details later
     x <- getBy $ UniqueUser $ credsIdent creds
     case x of
       Just (Entity uid _) -> return $ Authenticated uid
@@ -310,26 +318,130 @@ instance YesodAuth App where
         Authenticated
           <$> insert
             User
-              { userIdent = credsIdent creds
+              { userEmail = credsIdent creds
               , userPassword = Nothing
+              , userVerkey = Nothing
+              , userVerified = False
               }
 
   -- You can add other plugins like Google Email, email or OAuth here
   authPlugins :: App -> [AuthPlugin App]
-  authPlugins app = authOpenId Claimed [] : extraAuthPlugins
-   where
-    -- Enable authDummy login if enabled.
-    extraAuthPlugins = [authDummy | appAuthDummyLogin $ appSettings app]
+  authPlugins app = [authEmail]
+
+--  : extraAuthPlugins
+-- where
+-- Enable authDummy login if enabled.
+--  extraAuthPlugins = [authDummy | appAuthDummyLogin $ appSettings app]
 
 -- | Access function to determine if a user is logged in.
 isAuthenticated :: Handler AuthResult
 isAuthenticated = do
   muid <- maybeAuthId
   return $ case muid of
-    Nothing -> Unauthorized "You must login to access this page"
+    Nothing -> Unauthorized "You must login to access this page" -- TODO: i18n
     Just _ -> Authorized
 
+isAuthenticatedAsAdmin :: Handler AuthResult
+isAuthenticatedAsAdmin = do
+  muser <- maybeAuth
+  return $ case muser of
+    Nothing -> Unauthorized "You must login to access this page" -- TODO: i18n
+    Just (Entity _ user) -> if userEmail user == "a@a.com" then Authorized else Unauthorized "You must be admin to access this page" -- TODO: check if uid is in admin list instead of hardcoded credentials
+
+-- TODO: change this one for security reasons once prototype is done, maybe make it match with the one on top
+isAdmin :: Maybe (Entity User) -> Bool
+isAdmin muser = case muser of
+  Nothing -> False
+  Just (Entity _ user) -> userEmail user == "a@a.com"
+
 instance YesodAuthPersist App
+
+instance YesodAuthEmail App where
+  type AuthEmailId App = UserId
+
+  afterPasswordRoute _ = HomeR
+
+  addUnverified email verkey =
+    liftHandler $ runDB $ insert $ User email Nothing (Just verkey) False
+
+  sendVerifyEmail email _ verurl = do
+    -- Print out to the console the verification email, for easier
+    -- debugging.
+    liftIO $ putStrLn $ "Copy/ Paste this URL in your browser:" ++ verurl
+
+    -- Send email.
+    liftIO
+      $ renderSendMail
+        (emptyMail $ Address Nothing "noreply")
+          { mailTo = [Address Nothing email]
+          , mailHeaders =
+              [ ("Subject", "Verify your email address")
+              ]
+          , mailParts = [[textPart, htmlPart]]
+          }
+   where
+    textPart =
+      Part
+        { partType = "text/plain; charset=utf-8"
+        , partEncoding = None
+        , partDisposition = DefaultDisposition
+        , partContent =
+            PartContent
+              $ encodeUtf8
+                [stext|
+                    Please confirm your email address by clicking on the link below.
+
+                    #{verurl}
+
+                    Thank you
+                |]
+        , partHeaders = []
+        }
+    html =
+      encodeUtf8
+        [stext|
+                    <p>Please confirm your email address by clicking on the link below.</p>
+                    <p>
+                        <a href=#{verurl}>#{verurl}
+                    </p>
+                    <p>Thank you</p>
+                    |]
+
+    htmlPart =
+      Part
+        { partType = "text/html; charset=utf-8"
+        , partEncoding = None
+        , partDisposition = DefaultDisposition
+        , partContent =
+            PartContent html
+        , partHeaders = []
+        }
+  getVerifyKey = liftHandler . runDB . fmap (userVerkey =<<) . get
+  setVerifyKey uid key = liftHandler $ runDB $ update uid [UserVerkey =. Just key]
+  verifyAccount uid = liftHandler $ runDB $ do
+    mu <- get uid
+    case mu of
+      Nothing -> return Nothing
+      Just u -> do
+        update uid [UserVerified =. True, UserVerkey =. Nothing]
+        return $ Just uid
+  getPassword = liftHandler . runDB . fmap (userPassword =<<) . get
+  setPassword uid pass = liftHandler . runDB $ update uid [UserPassword =. Just pass]
+  getEmailCreds email = liftHandler $ runDB $ do
+    mu <- getBy $ UniqueUser email
+    case mu of
+      Nothing -> return Nothing
+      Just (Entity uid u) ->
+        return
+          $ Just
+            EmailCreds
+              { emailCredsId = uid
+              , emailCredsAuthId = Just uid
+              , emailCredsStatus = isJust $ userPassword u
+              , emailCredsVerkey = userVerkey u
+              , emailCredsEmail = email
+              }
+  getEmail = liftHandler . runDB . fmap (fmap userEmail) . get
 
 -- This instance is required to use forms. You can modify renderMessage to
 -- achieve customized and internationalized form validation messages.
@@ -354,7 +466,7 @@ isHtmxRequest = do
   maybeHeader <- lookupHeader "HX-Request"
   return $ isJust maybeHeader
 
--- this is used to either use htmx or not, this way we just have to combine the html and javascript, then call this function
+-- this function has been modified to seamlessly support htmx, either returns whole page, or just the requested part if htmx is supported
 renderWidget :: AppMessage -> Widget -> Handler Html
 renderWidget message widget = do
   htmx <- isHtmxRequest

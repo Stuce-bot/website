@@ -21,9 +21,17 @@
             ##{id}
             >#{icon}
         <span .link-text>_{MsgTheme}
-  <!-- lang button -->
-  <form action=@{SwitchLangR} method=post #lang>
-    <button type="submit" class="link-button" name="lang" value=_{MsgOtherLanguage}>_{MsgOtherLanguage}
+
+<!-- lang button -->
+<form action=@{SwitchLangR} method=post #lang> <!-- TODO : add htmx request that replaces whole html page (but not css/js) -->
+  $maybe token <- mtoken
+    <input type="hidden" name="_token" value="#{token}">
+  <button type="submit" class="link-button" name="lang" value=_{MsgOtherLanguage}>_{MsgOtherLanguage}
+
+<!-- login button -->
+<form action=@{AuthR LoginR} method=get #lang> <!-- TODO: change body with htmx -->
+  <button type="submit" class="link-button" name="login">login
+
 <!-- Page Contents -->
 <main>
   ^{widget}
