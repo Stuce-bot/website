@@ -156,6 +156,8 @@ postEditNewsEntryR entryId = do
         <input type=submit value=_{MsgNewEntry}>
 |]
 
+-- TODO: check how renderMessage works, and implement similar here to avoid code duplication instead of this ()
+
 -- we still go trough the languages list because we need to check if we actually prefer german and not only if german is present
 -- meaning we cant just check if german exists but if it comes before
 prefersGerman :: [Text] -> Bool

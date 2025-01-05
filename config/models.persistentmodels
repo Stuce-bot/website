@@ -17,3 +17,10 @@ Entry
    contentDe Markdown
    time UTCTime
    posted Bool
+
+-- | Entry of a calendar post
+CalendarEntry
+  contentFr Text
+  contentDe Text
+  date Day
+  posted Bool

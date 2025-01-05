@@ -1,4 +1,5 @@
 {-# LANGUAGE ExplicitForAll #-}
+{-# LANGUAGE FlexibleContexts #-}
 {-# LANGUAGE InstanceSigs #-}
 {-# LANGUAGE MultiParamTypeClasses #-}
 {-# LANGUAGE OverloadedStrings #-}
@@ -18,16 +19,15 @@ import Import.NoFoundation
 import Text.Hamlet (hamletFile)
 import Text.Jasmine (minifym)
 
--- Used only when in "auth-dummy-login" setting is enabled.
--- TODO: remove when not needed anymore
--- import Yesod.Auth.Dummy
-
 import Network.Mail.Mime hiding (htmlPart)
 import Text.Shakespeare.Text (stext)
 import Yesod.Auth.Email
+import Yesod.Auth.Message as AuthMsg
 import Yesod.Core.Types (Logger)
 import qualified Yesod.Core.Unsafe as Unsafe
 import Yesod.Default.Util (addStaticContentExternal)
+import Yesod.Form.I18n.French
+import Yesod.Form.I18n.German
 
 -- TODO: change login button to logout when login'd
 
@@ -147,14 +147,14 @@ instance Yesod App where
           , NavbarLeft
               $ MenuItem
                 { menuItemLabel = MsgCalendar
-                , menuItemRoute = ProfileR
+                , menuItemRoute = CalendarR
                 , menuItemAccessCallback = True
                 , menuItemIcon = "calendar_month"
                 }
           , NavbarLeft
               $ MenuItem
                 { menuItemLabel = MsgFiles
-                , menuItemRoute = ProfileR
+                , menuItemRoute = DocumentsR []
                 , menuItemAccessCallback = True
                 , menuItemIcon = "description"
                 }
@@ -217,12 +217,17 @@ instance Yesod App where
   isAuthorized (StaticR _) _ = return Authorized
   isAuthorized SwitchLangR _ = return Authorized
   isAuthorized NewsR _ = return Authorized
+  isAuthorized CalendarR _ = return Authorized
   isAuthorized (NewsEntryR _) _ = return Authorized
+  isAuthorized (CalendarEntryR _) _ = return Authorized
+  isAuthorized (DocumentsR _) _ = return Authorized -- TODO: change access if we have a public folder
   -- routes that need to be authenticated (every member can access it)
   isAuthorized ProfileR _ = isAuthenticated
   -- routes for admins only
   isAuthorized (EditNewsEntryR _) _ = isAuthenticatedAsAdmin
   isAuthorized NewNewsEntryR _ = isAuthenticatedAsAdmin
+  isAuthorized (EditCalendarEntryR _) _ = isAuthenticatedAsAdmin
+  isAuthorized NewCalendarEntryR _ = isAuthenticatedAsAdmin
 
   -- This function creates static content files in the static folder
   -- and names them based on a hash of their content. This allows
@@ -307,7 +312,6 @@ instance YesodAuth App where
     Creds App ->
     m (AuthenticationResult App)
   authenticate creds = liftHandler $ runDB $ do
-    -- TODO: we might in our case not want to allow creating new user, check this in more details later
     x <- getBy $ UniqueUser $ credsIdent creds
     case x of
       Just (Entity uid _) -> return $ Authenticated uid
@@ -323,7 +327,15 @@ instance YesodAuth App where
 
   -- You can add other plugins like Google Email, email or OAuth here
   authPlugins :: App -> [AuthPlugin App]
-  authPlugins app = [authEmail]
+  authPlugins _ = [authEmail]
+
+  renderAuthMessage _ [] = frenchMessage
+  renderAuthMessage master (x : xs)
+    | x == "fr" = frenchMessage
+    | x == "fr_CH" = frenchMessage
+    | x == "de" = germanMessage
+    | x == "de_CH" = germanMessage
+    | otherwise = renderAuthMessage master xs
 
 --  : extraAuthPlugins
 -- where
@@ -356,7 +368,11 @@ instance YesodAuthPersist App
 instance YesodAuthEmail App where
   type AuthEmailId App = UserId
 
+  -- TODO: remove register behavior, create resetpassword email, and check why i18n doesnt work
+
   afterPasswordRoute _ = HomeR
+
+  emailLoginHandler = customEmailLoginHandler
 
   addUnverified email verkey =
     liftHandler $ runDB $ insert $ User email Nothing (Just verkey) False
@@ -444,7 +460,13 @@ instance YesodAuthEmail App where
 -- achieve customized and internationalized form validation messages.
 instance RenderMessage App FormMessage where
   renderMessage :: App -> [Lang] -> FormMessage -> Text
-  renderMessage _ _ = defaultFormMessage
+  renderMessage _ [] = defaultFormMessage
+  renderMessage app (x : xs)
+    | x == "fr" = frenchFormMessage
+    | x == "fr_CH" = frenchFormMessage
+    | x == "de" = germanFormMessage
+    | x == "de_CH" = germanFormMessage
+    | otherwise = renderMessage app xs
 
 -- Useful when writing code that is re-usable outside of the Handler context.
 -- An example is background jobs that send email.
@@ -487,3 +509,71 @@ data TabItem = TabItem
 -- https://github.com/yesodweb/yesod/wiki/Sending-email
 -- https://github.com/yesodweb/yesod/wiki/Serve-static-files-from-a-separate-domain
 -- https://github.com/yesodweb/yesod/wiki/i18n-messages-in-the-scaffolding
+
+data UserLoginForm = UserLoginForm {_loginEmail :: Text, _loginPassword :: Text}
+
+-- Override default email login form, as we do not want to allow registering, so we need a custom interface (We also disable the capabilities to do so for obvious security reasons (if we dont modify further the register page exists but is not working))
+
+-- emailLoginHandler :: (Route Auth -> Route site) -> WidgetFor site ()
+-- emailLoginHandler = customEmailLoginHandler
+
+customEmailLoginHandler ::
+  (YesodAuthEmail master) =>
+  (Route Auth -> Route master) ->
+  WidgetFor master ()
+customEmailLoginHandler toParent = do
+  (widget, enctype) <- generateFormPost loginForm
+
+  [whamlet|
+            <form method="post" action="@{toParent loginR}" enctype=#{enctype}>
+                <div id="emailLoginForm">
+                    ^{widget}
+                    <div>
+                        <button type=submit .btn .btn-success>
+                            _{AuthMsg.LoginViaEmail}
+                        &nbsp;
+                        <a href="@{toParent forgotPasswordR}" .btn .btn-default>
+                            _{AuthMsg.PasswordResetTitle}
+        |]
+ where
+  loginForm extra = do
+    emailMsg <- renderMessage' AuthMsg.Email
+    (emailRes, emailView) <- mreq emailField (emailSettings emailMsg) Nothing
+
+    passwordMsg <- renderMessage' AuthMsg.Password
+    (passwordRes, passwordView) <- mreq passwordField (passwordSettings passwordMsg) Nothing
+
+    let userRes =
+          UserLoginForm
+            <$> emailRes
+            <*> passwordRes
+    let widget = do
+          [whamlet|
+                  #{extra}
+                  <div>
+                      ^{fvInput emailView}
+                  <div>
+                      ^{fvInput passwordView}
+              |]
+
+    return (userRes, widget)
+  emailSettings emailMsg = do
+    FieldSettings
+      { fsLabel = SomeMessage AuthMsg.Email
+      , fsTooltip = Nothing
+      , fsId = Just "email"
+      , fsName = Just "email"
+      , fsAttrs = [("autofocus", ""), ("placeholder", emailMsg)]
+      }
+  passwordSettings passwordMsg =
+    FieldSettings
+      { fsLabel = SomeMessage AuthMsg.Password
+      , fsTooltip = Nothing
+      , fsId = Just "password"
+      , fsName = Just "password"
+      , fsAttrs = [("placeholder", passwordMsg)]
+      }
+  renderMessage' msg = do
+    langs <- languages
+    master <- getYesod
+    return $ renderAuthMessage master langs msg

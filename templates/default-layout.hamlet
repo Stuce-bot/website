@@ -29,7 +29,7 @@
   <button type="submit" class="link-button" name="lang" value=_{MsgOtherLanguage}>_{MsgOtherLanguage}
 
 <!-- login button -->
-<form action=@{AuthR LoginR} method=get #lang> <!-- TODO: change body with htmx -->
+<form action=@{AuthR LoginR} method=get #lang> <!-- NOTE: using htmx here is too much work for the benefits : we prefer keeping simple code -->
   <button type="submit" class="link-button" name="login">login
 
 <!-- Page Contents -->

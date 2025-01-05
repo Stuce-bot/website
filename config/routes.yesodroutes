@@ -15,10 +15,12 @@
 /lang SwitchLangR POST
 
 /news NewsR GET
-
 /news/new NewNewsEntryR GET POST
-
 /news/edit/#EntryId EditNewsEntryR GET POST
-
 /news/view/#EntryId NewsEntryR GET
 
+/calendar CalendarR GET
+/calendar/new NewCalendarEntryR GET POST
+/calendar/edit/#CalendarEntryId EditCalendarEntryR GET POST
+/calendar/view/#CalendarEntryId CalendarEntryR GET
+/documents/+Texts DocumentsR GET POST

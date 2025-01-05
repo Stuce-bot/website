@@ -8,14 +8,15 @@
  	- [ ] infinite scroll with htmx
   	- [ ] better new button
   	- [ ] show which articles are published
-- [ ] Make a login by email
-	- [ ] custom login page with forgot password instead of new user
+- [x] Make a login by email
+	- [x] custom login page with forgot password instead of new user
  	- [ ] setup email client
-  	- [ ] structure database to support roles
-  	- [ ] add command to import basic roles (avoid situation where we delete all roles)
+  - [ ] logout
+  - [ ] structure database to support roles
 - [ ] Make a way to display files from a folder
-- [ ] Make a calendar with similar technology as the blog
-
+- [x] Make a calendar with similar technology as the blog
+  - [ ] style calendar
+  - [ ] change day to localDay
 # Vision
 
 ## Billingual for users and maintainers
